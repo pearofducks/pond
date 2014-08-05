@@ -6,21 +6,19 @@ class Image
   def initialize path, destination
     @original = path
     @dest = destination
-    process
+    check
   end
 
   def check
     if File.exists? processed_name
-      if processed_image_is_current?
-      else
-        process
-      end
+      process unless processed_image_is_current?
     else
       process
     end
   end
   
   def process
+    check_and_make processed_folder
     write_meta shrink
   end
 
@@ -36,33 +34,46 @@ class Image
 
   def write_meta i
     mtime = File.mtime @original
-    captured_at = i[:profile_exif][:date_time]
+    captured_at = Time.parse i[:profile_exif][:date_time].split(' ').first.gsub(':','-')
     check_and_write YAML.dump({ mtime: mtime, captured_at: captured_at })
   end
 
+  def read_meta
+    @meta = YAML.load File.read(meta_folder + meta_name) rescue nil
+  end
+
   def processed_image_is_current?
-    # original_mtime = File.mtime @original
-    # processed_mtime =
-    # if original_mtime == processed_mtime
-    # end
+    return false if read_meta.nil?
+    if File.mtime(@original) == @meta[:mtime]
+      true
+    else
+      false
+    end
   end
 
   def processed_name
-    @dest + '/' + File.basename(@original)
+    processed_folder + File.basename(@original)
+  end
+
+  def processed_folder
+    @dest + '/processed/'
+  end
+
+  def meta_folder
+    @dest + '/meta/'
+  end
+
+  def meta_name
+    File.basename(@original,'.jpg') + '.yml'
+  end
+
+  def check_and_make folder
+    Dir.mkdir folder unless File.directory? folder
   end
 
   def check_and_write payload
-    meta_folder = @dest + '/meta/'
-    puts meta_folder
-    Dir.mkdir meta_folder unless File.directory? meta_folder
-    target = meta_folder + File.basename(@original,'.jpg') + '.yml'
+    check_and_make meta_folder
+    target = meta_folder + meta_name
     File.write target,payload
   end
 end
-
-# meta folder
-#
-#
-# yaml data
-# i[:profile_exif][:date_time]
-# compare modified dates File.mtime
