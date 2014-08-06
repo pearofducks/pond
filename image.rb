@@ -10,7 +10,9 @@ class Image
   end
 
   def check
+    puts Rainbow("Processing: ").blue + Rainbow(File.basename(@original)).underline
     if File.exists? processed_name
+      puts Rainbow("\tfile exists... ").green
       process unless processed_image_is_current?
     else
       process
@@ -18,6 +20,7 @@ class Image
   end
   
   def process
+    puts Rainbow("\tshrinking... ").green
     check_and_make processed_folder
     write_meta shrink
   end
@@ -45,8 +48,10 @@ class Image
   def processed_image_is_current?
     return false if read_meta.nil?
     if File.mtime(@original) == @meta[:mtime]
+      puts Rainbow("\tand is current! ").green
       true
     else
+      puts Rainbow("\tis not current... ").green
       false
     end
   end

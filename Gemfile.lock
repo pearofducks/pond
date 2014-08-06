@@ -1,0 +1,24 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    coderay (1.1.0)
+    haml (4.0.5)
+      tilt
+    method_source (0.8.2)
+    micro_magick (0.0.7)
+    pry (0.10.0)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    rainbow (2.0.0)
+    slop (3.6.0)
+    tilt (2.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  haml
+  micro_magick
+  pry
+  rainbow
