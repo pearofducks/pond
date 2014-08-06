@@ -31,7 +31,7 @@ class Image
     i = MicroMagick::Image.new original_path
     if i.width > 2500 or i.height > 2500
       i.strip.resize("2500x2500").write processed_path
-    elsif File.size(original_path)/1024/1024 > 1
+    else
       i.strip.write processed_path
     end
     return i
