@@ -39,7 +39,11 @@ class Image
 
   def write_meta i
     mtime = File.mtime original_path
-    captured_at = Time.parse i[:profile_exif][:date_time].split(' ').first.gsub(':','-')
+    unless i[:profile_exif][:date_time_digitized].nil?
+      captured_at = Time.parse i[:profile_exif][:date_time_digitized].split(' ').first.gsub(':','-')
+    else
+      captured_at = Time.parse i[:profile_exif][:date_time].split(' ').first.gsub(':','-')
+    end
     check_and_write YAML.dump({ mtime: mtime, captured_at: captured_at })
   end
 

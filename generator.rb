@@ -2,6 +2,7 @@ require 'haml'
 
 class Generator
   def self.generate! images
+    puts Rainbow("Generating site!").yellow
     images.sort_by! { |i| i.captured_at }.reverse!
     input = images.first.src
     output = images.first.dest
