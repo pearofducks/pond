@@ -44,7 +44,8 @@ class Image
     else
       captured_at = Time.parse i[:profile_exif][:date_time].split(' ').first.gsub(':','-')
     end
-    check_and_write YAML.dump({ mtime: mtime, captured_at: captured_at })
+    @meta = { mtime: mtime, captured_at: captured_at }
+    check_and_write YAML.dump(@meta)
   end
 
   def read_meta
