@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-pondDir = File.expand_path("/usr/local/lib/pond")
+pondDir = File.expand_path "/usr/local/lib/pond"
+
 ENV['BUNDLE_GEMFILE'] ||= pondDir + "/Gemfile"
 $:.unshift pondDir
 
